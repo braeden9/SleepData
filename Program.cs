@@ -58,7 +58,10 @@ namespace SleepData
             else if (resp == "2")
             {
                 // TODO: parse data file
+                StreamReader sr = new StreamReader("data.txt");
+                while (!sr.EndOfStream){
 
+                }
             }
         }
     }
