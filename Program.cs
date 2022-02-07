@@ -60,7 +60,14 @@ namespace SleepData
                 // TODO: parse data file
                 StreamReader sr = new StreamReader("data.txt");
                 while (!sr.EndOfStream){
-
+                    // Splits up data from file
+                    string line = sr.ReadLine();
+                    string date = line.Split(',')[0];
+                    int month = int.Parse(date.Split('/')[0]);
+                    int day = int.Parse(date.Split('/')[1]);
+                    int year = int.Parse(date.Split('/')[2]);
+                    string nights = line.Split(',')[1];
+                    String[] hours = nights.Split('|');
                 }
             }
         }
