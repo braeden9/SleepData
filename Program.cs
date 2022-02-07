@@ -7,13 +7,15 @@ namespace SleepData
     {
         static void Main(string[] args)
         {
+            var file = "data.txt";
+
             // ask for input
             Console.WriteLine("Enter 1 to create data file.");
             Console.WriteLine("Enter 2 to parse data.");
             Console.WriteLine("Enter anything else to quit.");
             // input response
             string resp = Console.ReadLine();
-
+            
             if (resp == "1")
             {
                 // create data file
@@ -35,7 +37,7 @@ namespace SleepData
                 Random rnd = new Random();
 
                 // create file
-                StreamWriter sw = new StreamWriter("data.txt");
+                StreamWriter sw = new StreamWriter(file);
 
                 // loop for the desired # of weeks
                 while (dataDate < dataEndDate)
@@ -58,16 +60,30 @@ namespace SleepData
             else if (resp == "2")
             {
                 // TODO: parse data file
-                StreamReader sr = new StreamReader("data.txt");
-                while (!sr.EndOfStream){
-                    // Splits up data from file
-                    string line = sr.ReadLine();
-                    string date = line.Split(',')[0];
-                    int month = int.Parse(date.Split('/')[0]);
-                    int day = int.Parse(date.Split('/')[1]);
-                    int year = int.Parse(date.Split('/')[2]);
-                    string nights = line.Split(',')[1];
-                    String[] hours = nights.Split('|');
+                if (File.Exists(file))
+                {
+                    StreamReader sr = new StreamReader(file);
+                    while (!sr.EndOfStream){
+                        // Splits up data from file
+                        string line = sr.ReadLine();
+                        DateTime date = DateTime.Parse(line.Split(',')[0]);
+
+                        string nights = line.Split(',')[1];
+                        String[] hours = nights.Split('|');
+
+                        int total = 0;
+                        for(int i = 0; i < 7; i++){
+                            total += int.Parse(nights.Split('|')[i]);
+                        }
+                        double average = total / 7;
+
+                        Console.WriteLine($"Week of {line.Split(',')[0]:MMM, dd, yyyy}");
+                        Console.WriteLine("Mo Tu We Th Fr Sa Su Tot Avg");
+                        Console.WriteLine("-- -- -- -- -- -- -- --- ---");
+                        Console.WriteLine($"{hours[0],2}{hours[1],3}{hours[2],3}{hours[3],3}{hours[4],3}{hours[5],3}{hours[6],3}{total,4}{average,4}");
+                        Console.WriteLine(" ");
+                    }
+                    sr.Close();
                 }
             }
         }
